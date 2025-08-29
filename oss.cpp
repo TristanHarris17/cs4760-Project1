@@ -49,29 +49,41 @@ int main(int argc, char*argv[]){
          return 1;
     }
 
-    cout << "Total children processes to create: " << proc << endl;
-    cout << "Children processes to run simultaneously: " << simul << endl;
-    cout << "Iterations each child process should run: " << iter << endl;
-
     // fork on oss and exec on user with arguments
-    pid_t child_pid = fork();
-    if (child_pid == 0){
-        cout << "Child process created with PID: " << getpid() << endl;
-
-        char *args[] = {(char *)"./user", (char *)to_string(iter).c_str(), NULL};
-        int status = execvp(args[0], args);
-        if (status == -1) {
-            cerr << "Error executing user process." << endl;
-            return 1;
+    int running = 0;
+    int launched = 0;
+    
+    while (launched < proc) {
+        if (running < simul){
+            pid_t child_pid = fork();
+            if (child_pid < 0) {
+                cerr << "Fork failed." << endl;
+                return 1;
+            }
+            if (child_pid == 0) {
+                char* args[] = {(char*)"./user", (char*)to_string(iter).c_str(), NULL};
+                execv(args[0], args);
+                cerr << "Exec failed." << endl;
+                exit(1);
+            }
+            else {
+                running++;
+                launched++;
+                cout << "Parent process PID: " << getpid() << " created child PID: " << child_pid << endl;
+            }
         }
-        
-        cerr << "Execv failed." << endl;
-    }
-    else {
-        cout << "Parent process PID: " << getpid() << " created child PID: " << child_pid << endl;
-        wait(0);
-        cout << "Child process with PID: " << child_pid << " has completed." << endl;
+        else {
+            wait(NULL); // wait for one child process to finish
+            running--;
+        }
     }
 
+    while (running > 0) {
+        wait(NULL);
+        running--;
+    }
+
+    cout << "All child processes have completed." << endl;
+    
     return 0;
 }
