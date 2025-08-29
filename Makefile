@@ -1,8 +1,8 @@
-CC = gcc
+CC = g++
 CFLAGS = -Wall -g
 
-OSS_SRC = oss.c
-USER_SRC = user.c
+OSS_SRC = oss.cpp
+USER_SRC = user.cpp
 
 OSS_BIN = oss
 USER_BIN = user
