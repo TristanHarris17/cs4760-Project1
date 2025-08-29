@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <string>
+#include <sys/wait.h>
 using namespace std;
 
 int main(int argc, char*argv[]){
@@ -52,7 +53,25 @@ int main(int argc, char*argv[]){
     cout << "Children processes to run simultaneously: " << simul << endl;
     cout << "Iterations each child process should run: " << iter << endl;
 
-    
+    // fork on oss and exec on user with arguments
+    pid_t child_pid = fork();
+    if (child_pid == 0){
+        cout << "Child process created with PID: " << getpid() << endl;
+
+        char *args[] = {(char *)"./user", (char *)to_string(iter).c_str(), NULL};
+        int status = execvp(args[0], args);
+        if (status == -1) {
+            cerr << "Error executing user process." << endl;
+            return 1;
+        }
+        
+        cerr << "Execv failed." << endl;
+    }
+    else {
+        cout << "Parent process PID: " << getpid() << " created child PID: " << child_pid << endl;
+        wait(0);
+        cout << "Child process with PID: " << child_pid << " has completed." << endl;
+    }
 
     return 0;
 }
