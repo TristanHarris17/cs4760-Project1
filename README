@@ -10,7 +10,7 @@ Generative AI used : chatgpt
 Prompts: 
     Where is the error in my Makefile (provided make file as context)
     
-    Parse the command line arguments -h -n -s -t using getop in cpp
+    Parse the command line arguments -h -n -s -t using getop in cpp and allow only non negative integers also require all arguemnts except -h which is help
 Summary: 
     Found the error in my Makefile I was using gcc instead of g++
-    Created the skeleton of the loop that parses the command line arguments 
+    Created the loop that parses the command line arguments using getopt and the input validation

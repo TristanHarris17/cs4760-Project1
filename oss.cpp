@@ -18,7 +18,7 @@ int main(int argc, char*argv[]){
    int opt;
 
    // parse command line arguments
-   while ((opt = getopt(argc, argv, "hn:s:t:")) != -1) {
+    while ((opt = getopt(argc, argv, "hn:s:t:")) != -1) {
        switch (opt) {
            case 'h':
                cout << "Help: \n"
@@ -28,17 +28,35 @@ int main(int argc, char*argv[]){
                     << "-t iter # of iterations each child process should run\n"
                     << "All options -n, -s, and -t are required and must be positive integers." << endl;
                return 0;
-            case 'n':
-                proc = stoi(optarg);
+            case 'n': {
+                int val = stoi(optarg);
+                if (val < 0) {
+                    cerr << "Error: -n must be a non-negative integer." << endl;
+                    return 1;
+                }
+                proc = val;
                 break;
-            case 's':
-                simul = stoi(optarg);
+            }
+            case 's': {
+                int val = stoi(optarg);
+                if (val < 0) {
+                    cerr << "Error: -s must be a non-negative integer." << endl;
+                    return 1;
+                }
+                simul = val;
                 break;
-            case 't':
-                iter = stoi(optarg);
+            }
+            case 't': {
+                int val = stoi(optarg);
+                if (val < 0) {
+                    cerr << "Error: -t must be a non-negative integer." << endl;
+                    return 1;
+                }
+                iter = val;
                 break;
-           default:
-               cerr << "Usage: " << argv[0] << " [-h] [-n proc] [-s simul] [-t iter]" << endl;
+            }
+           default: // unavailable option
+               cerr << "Usage: " << argv[0] << " [-h] [-n proc] [-s simul] [-t iter]" << endl; 
                return 1;
        }
     }
@@ -53,7 +71,9 @@ int main(int argc, char*argv[]){
     int running = 0;
     int launched = 0;
     
+    // loop until all processes are launched
     while (launched < proc) {
+        // check if a new process can be launched
         if (running < simul){
             pid_t child_pid = fork();
             if (child_pid < 0) {
@@ -78,6 +98,7 @@ int main(int argc, char*argv[]){
         }
     }
 
+    // wait for all remaining child processes to finish
     while (running > 0) {
         wait(NULL);
         running--;
