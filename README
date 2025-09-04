@@ -1,6 +1,7 @@
 Name: Tristan Harris
 Date: 8/29/2025
 Environment: Linux (WSL), Visual Stuido Code
+Version Control: GitHub https://github.com/TristanHarris17/cs4760-Project1
 How to compile the project:
 Type ’make’
 Example of how to run the project:
