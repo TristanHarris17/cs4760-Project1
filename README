@@ -1,0 +1,16 @@
+Name: Tristan Harris
+Date: 8/29/2025
+Environment: Linux (WSL), Visual Stuido Code
+How to compile the project:
+Type ’make’
+Example of how to run the project:
+./oss -n 3 -s 2 -t 5
+
+Generative AI used : chatgpt
+Prompts: 
+    Where is the error in my Makefile (provided make file as context)
+    
+    Parse the command line arguments -h -n -s -t using getop in cpp
+Summary: 
+    Found the error in my Makefile I was using gcc instead of g++
+    Created the skeleton of the loop that parses the command line arguments 
