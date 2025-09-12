@@ -1,3 +1,5 @@
+// Author: Tristan Harris
+// Date: 8/28/25
 #include <iostream>
 #include <unistd.h>
 #include <sys/types.h>
