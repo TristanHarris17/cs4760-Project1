@@ -68,6 +68,10 @@ int main(int argc, char*argv[]){
          cerr << "Error: All options -n, -s, and -t are required and must be positive integers." << endl;
          return 1;
     }
+    if (simul == 0) {
+        cout << "No processes to run simultaneously. Exiting." << endl;
+        return 0;
+    }
 
     // fork on oss and exec on user with arguments
     int running = 0;
