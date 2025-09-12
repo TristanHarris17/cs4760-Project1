@@ -5,7 +5,7 @@
 using namespace std;
 
 int main(int argc, char*argv[]){
-    int iterations = stoi(argv[1]); // Default value
+    int iterations = stoi(argv[1]);
     pid_t pid = getpid();
     pid_t ppid = getppid();
 

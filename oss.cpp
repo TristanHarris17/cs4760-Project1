@@ -22,6 +22,8 @@ int main(int argc, char*argv[]){
        switch (opt) {
            case 'h':
                cout << "Help: \n"
+                    << "This program creates child processes that run a specified number of iterations.\n"
+                    << "Usage: " << argv[0] << " [-h] [-n proc] [-s simul] [-t iter]\n"
                     << "-h help\n"
                     << "-n proc # of total children processes to create\n"
                     << "-s simul # of children processes to run simultaneously\n"
@@ -93,18 +95,21 @@ int main(int argc, char*argv[]){
             }
         }
         else {
-            wait(NULL); // wait for one child process to finish
+            pid_t finished_pid = wait(NULL); // wait for one child process to finish
             running--;
+            cout << "PID: " << finished_pid << " PPID: " << getpid() << " has completed." << endl;
         }
     }
 
     // wait for all remaining child processes to finish
     while (running > 0) {
-        wait(NULL);
+        pid_t finished_pid = wait(NULL);
         running--;
+        cout << "PID: " << finished_pid << " PPID: " << getpid() << " has completed." << endl;
     }
 
     cout << "All child processes have completed." << endl;
+    cout << "Total children launched = " << launched << endl;
     
     return 0;
 }
